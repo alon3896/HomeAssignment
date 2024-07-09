@@ -53,8 +53,14 @@ jobs:
         if: env.commits_are_different == 'true'
         id: get_version
         run: |
-          latest_version=$(git describe --tags --abbrev=0 | awk -F. -v OFS=. '{$NF++;print}')
-          echo "version=${latest_version}" >> $GITHUB_ENV
+          current_version=$(git describe --tags --abbrev=0)
+          IFS='.' read -r -a version_parts <<< "$current_version"
+          major="${version_parts[0]}"
+          minor="${version_parts[1]}"
+          patch="${version_parts[2]}"
+          ((patch++))
+          next_version="$major.$minor.$patch"
+          echo "version=${next_version}" >> $GITHUB_ENV
 
       - name: Create a new version
         if: env.commits_are_different == 'true'
@@ -67,8 +73,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.AFIMILK }}
         with:
-          tag_name: v${{ steps.get_version.outputs.version }}
-          release_name: Release ${{ steps.get_version.outputs.version }}
+          tag_name: v${{ env.version }}
+          release_name: Release ${{ env.version }}
           draft: false
           prerelease: false
 
