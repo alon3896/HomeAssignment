@@ -65,7 +65,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${'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'}
+          GITHUB_TOKEN: ${{ secrets.afiMilkDemo }}
         with:
           tag_name: v${{ steps.get_version.outputs.version }}
           release_name: Release ${{ steps.get_version.outputs.version }}
@@ -76,7 +76,7 @@ jobs:
         if: env.commits_are_different == 'true'
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN:  ${'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'}
+          GITHUB_TOKEN:  ${{ secrets.afiMilkDemo }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./nuget/HomeAssignment.*.nupkg
