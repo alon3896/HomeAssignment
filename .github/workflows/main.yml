@@ -65,7 +65,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${'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'}
+          GITHUB_TOKEN: ${{'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'}}
         with:
           tag_name: v${{ steps.get_version.outputs.version }}
           release_name: Release ${{ steps.get_version.outputs.version }}
