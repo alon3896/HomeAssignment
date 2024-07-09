@@ -82,8 +82,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.AFIMILK }}
         with:
-          tag_name: 'v${{ env.VERSION }}'
-          release_name: Release ${{ env.VERSION }}  # Optional: Set release name
+          tag_name: ${{ env.VERSION }}  # Ensure this is correctly formatted, e.g., 'v${{ env.VERSION }}'
+          release_name: Release ${{ env.VERSION }}
           draft: false
           prerelease: false
 
