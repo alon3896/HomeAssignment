@@ -19,14 +19,16 @@ jobs:
 
       - name: check for changes
         id: check_changes
-        run: git clone https://github.com/alon3896/triger_demo.git
-          cd HomeAssignmentTrigger
-          latest_commit=$(git rev-parse HEAD)
-          echo "latest_commit=${latest_commit}" >> $GITHUB_ENV
+        run: |
+           git clone https://github.com/alon3896/triger_demo.git
+           cd triger_demo
+           latest_commit=$(git rev-parse HEAD)
+           echo "latest_commit=${latest_commit}" >> $GITHUB_ENV
 
       - name: get the last known commit
         id: get_last_commit
         run: echo "last_commit=$(cat last_commit.txt || echo 'none')" >> $GITHUB_ENV
+        continue-on-error: true
 
       - name: compare commits
         id: compare
