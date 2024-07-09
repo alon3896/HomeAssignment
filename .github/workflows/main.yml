@@ -100,6 +100,6 @@ jobs:
           GITHUB_TOKEN:  ${{ secrets.AFIMILK }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./nuget/HomeAssignment.*.nupkg
-          asset_name: HomeAssignment.${{ steps.get_version.outputs.version }}.nupkg
+          asset_path: /home/runner/work/HomeAssignment/HomeAssignment/src/nuget/InterviewTask.1.0.0.nupkg
+          asset_name: InterviewTask.${{ steps.get_version.outputs.version }}.nupkg
           asset_content_type: application/octet-stream
