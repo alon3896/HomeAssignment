@@ -65,7 +65,6 @@ jobs:
             semver=( ${current_version//./ } )
             major="${semver[0]}"
             minor="${semver[1]}"
-            patch="${semver[2]}"
             patch=$((patch + 1))
             new_version="v$major.$minor.$patch"  # Corrected variable name from 'path' to 'patch'
           fi
