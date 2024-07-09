@@ -65,8 +65,9 @@ jobs:
             semver=( ${current_version//./ } )
             major="${semver[0]}"
             minor="${semver[1]}"
-            patch=$((patch + 1))
-            new_version="v$major.$minor.$patch"  # Corrected variable name from 'path' to 'patch'
+            patch="${semver[2]}"
+            patch=$((patch + 1))  # Ensure patch is correctly initialized and incremented
+            new_version="v$major.$minor.$patch"
           fi
           echo "VERSION=${new_version:-v1.0.0}" >> $GITHUB_ENV
 
