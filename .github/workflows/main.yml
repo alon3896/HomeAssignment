@@ -76,7 +76,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.AFIMILK }}
         with:
           tag_name: v${{ env.VERSION }}  # Set tag_name dynamically using VERSION
           release_name: Release ${{ env.VERSION }}  # Optional: Set release name
