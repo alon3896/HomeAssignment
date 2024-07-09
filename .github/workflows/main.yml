@@ -59,6 +59,12 @@ jobs:
           echo "$latest_tag"
           if [ "$latest_tag" == "" ] || [ "$latest_tag" == "V" ] || [ "$latest_tag" == "v" ]; then
             initial_version="1.0.0"
+            semver=( ${initial_version//./ } )
+            major="${semver[0]}"
+            minor="${semver[1]}"
+            patch="${semver[2]}"
+            patch=$((patch + 1))  # Ensure patch is correctly initialized and incremented
+            new_version="v$major.$minor.$patch"
           else
             current_version=$(echo $latest_tag | cut -c 2-)
             semver=( ${current_version//./ } )
