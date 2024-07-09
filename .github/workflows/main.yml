@@ -53,7 +53,10 @@ jobs:
         if: env.commits_are_different == 'true'
         id: get_version
         run: |
-          latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
+          latest_tag=$(git describe --tags --abbrev=0 2>/dev/null)
+          if [ -z "$latest_tag" ]; then
+            latest_tag="v1.0.0"  # Set an initial version if no tags exist
+          fi
           IFS='.' read -r -a version_parts <<< "$latest_tag"
           major="${version_parts[0]#v}"
           minor="${version_parts[1]}"
@@ -61,6 +64,7 @@ jobs:
           ((patch++))
           next_version="$major.$minor.$patch"
           echo "version=${next_version}" >> $GITHUB_ENV
+
 
       - name: Create a new version
         if: env.commits_are_different == 'true'
