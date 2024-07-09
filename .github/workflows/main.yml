@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetch all history and tags
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
@@ -67,8 +69,7 @@ jobs:
             patch=$((patch + 1))
             new_version="$major.$minor.$patch"
           fi
-          echo "VERSION=$new_version" >> $GITHUB_ENV
-
+          echo "VERSION=${new_version:-1.0.0}" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         if: env.commits_are_different == 'true'
