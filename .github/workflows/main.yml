@@ -44,7 +44,9 @@ jobs:
       - name: Build and package
         if: env.commits_are_different == 'true'
         run: |
-          cd src
+          echo: 'current diracotry for testing'
+          pwd
+          ls
           dotnet restore
           dotnet build --configuration Release
           dotnet pack --configuration Release --output ./nuget
