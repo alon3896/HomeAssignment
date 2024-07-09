@@ -49,6 +49,8 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet pack --configuration Release --output ./nuget
+
+          ls -l ./nuget
       
 
       - name: Create a new version
