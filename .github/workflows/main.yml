@@ -57,7 +57,7 @@ jobs:
         run: |
           latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))
           echo "$latest_tag"
-          if [ "$latest_tag" == "v" ]; then
+          if [ "$latest_tag" == "" ] || [ "$latest_tag" == "V" ]; then
             initial_version="1.0.0"
           else
             current_version=$(echo $latest_tag | cut -c 2-)
