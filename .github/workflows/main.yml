@@ -53,7 +53,22 @@ jobs:
 
       - name: Create a new version
         if: env.commits_are_different == 'true'
-        run: echo "VERSION=$(echo ${GITHUB_REF/refs\/tags\//} | awk -F. -v OFS=. '{$NF++;print}')" >> $GITHUB_ENV
+        id: create_version
+        run: |
+          latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))
+          if [ "$latest_tag" == "" ]; then
+            initial_version="1.0.0"
+          else
+            current_version=$(echo $latest_tag | cut -c 2-)
+            semver=( ${current_version//./ } )
+            major="${semver[0]}"
+            minor="${semver[1]}"
+            patch="${semver[2]}"
+            patch=$((patch + 1))
+            new_version="$major.$minor.$patch"
+          fi
+          echo "VERSION=$new_version" >> $GITHUB_ENV
+
 
       - name: Create GitHub Release
         if: env.commits_are_different == 'true'
