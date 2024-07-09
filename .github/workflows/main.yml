@@ -1,0 +1,79 @@
+name: Build after Trigger
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "8.0.0"
+
+      - name: check for changes
+        id: check_changes
+        run: git clone https://github.com/alon3896/triger_demo.git
+          cd HomeAssignmentTrigger
+          latest_commit=$(git rev-parse HEAD)
+          echo "latest_commit=${latest_commit}" >> $GITHUB_ENV
+
+      - name: get the last known commit
+        id: get_last_commit
+        run: echo "last_commit=$(cat last_commit.txt || echo 'none')" >> $GITHUB_ENV
+
+      - name: compare commits
+        id: compare
+        run: |
+          if [ "${{ env.last_commit }}" != "${{ env.latest_commit }}" ]; then
+            echo "commits_are_different=true" >> $GITHUB_ENV
+          else
+            echo "commits_are_different=false" >> $GITHUB_ENV
+          fi
+      - name: save last commit
+        if: env.commits_are_different == 'true'
+        run: echo "${{ env.latest_commit }}" > last_commit.txt
+      - name: Build and package
+        if: env.commits_are_different == 'true'
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release --output ./nuget
+
+      - name: Get the latest version
+        if: env.commits_are_different == 'true'
+        id: get_version
+        run: echo ::set-output name=version::$(git describe --tags --abbrev=0 | awk -F. -v OFS=. '{$NF++;print}')
+
+      - name: Create a new version
+        if: env.commits_are_different == 'true'
+        run: echo "##[set-env name=VERSION]$(echo ${GITHUB_REF/refs\/tags\//} | awk -F. -v OFS=. '{$NF++;print}')"
+
+      - name: Create GitHub Release
+        if: env.commits_are_different == 'true'
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          release_name: Release ${{ steps.get_version.outputs.version }}
+          draft: false
+          prerelease: false
+
+      - name: Upload NuGet package
+        if: env.commits_are_different == 'true'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./nuget/HomeAssignment.*.nupkg
+          asset_name: HomeAssignment.${{ steps.get_version.outputs.version }}.nupkg
+          asset_content_type: application/octet-stream
