@@ -20,7 +20,7 @@ jobs:
       - name: check for changes
         id: check_changes
         run: |
-           git clone alon3896/triger_demo
+           git clone https://github.com/alon3896/triger_demo.git
            cd triger_demo
            latest_commit=$(git rev-parse HEAD)
            echo "latest_commit=${latest_commit}" >> $GITHUB_ENV
