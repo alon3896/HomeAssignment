@@ -71,6 +71,10 @@ jobs:
           fi
           echo "VERSION=${new_version:-1.0.0}" >> $GITHUB_ENV
 
+          - name: Debug VERSION
+            if: env.commits_are_different == 'true'
+            run: echo "VERSION=${{ env.VERSION }}"
+
       - name: Create GitHub Release
         if: env.commits_are_different == 'true'
         id: create_release
