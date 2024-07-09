@@ -67,7 +67,7 @@ jobs:
             minor="${semver[1]}"
             patch="${semver[2]}"
             patch=$((patch + 1))
-            new_version="v$major.$minor.$patch"
+            new_version="v$path.$major.$minor"
           fi
           echo "VERSION=${new_version:-v1.0.0}" >> $GITHUB_ENV
 
