@@ -69,7 +69,7 @@ jobs:
             patch=$((patch + 1))
             new_version="$major.$minor.$patch"
           fi
-          echo "VERSION=${new_version:-1.0.0}" >> $GITHUB_ENV
+          echo "VERSION=v${new_version:-1.0.0}" >> $GITHUB_ENV
 
       - name: Debug VERSION
         if: env.commits_are_different == 'true'
