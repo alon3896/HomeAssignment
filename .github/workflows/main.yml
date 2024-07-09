@@ -49,19 +49,7 @@ jobs:
           dotnet build --configuration Release
           dotnet pack --configuration Release --output ./nuget
 
-      - name: Get the latest version
-        if: env.commits_are_different == 'true'
-        id: get_version
-        run: |
-          latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
-          IFS='.' read -r -a version_parts <<< "$latest_tag"
-          major="${version_parts[0]#v}"
-          minor="${version_parts[1]}"
-          patch="${version_parts[2]}"
-          ((patch++))
-          next_version="$major.$minor.$patch"
-          echo "version=${next_version}" >> $GITHUB_EN
-
+      
 
       - name: Create a new version
         if: env.commits_are_different == 'true'
