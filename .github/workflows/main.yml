@@ -23,7 +23,7 @@ jobs:
         id: check_changes
         run: |
            git clone https://github.com/AfimilkRnD/HomeAssignmentTrigger.git
-           cd triger_demo
+           cd HomeAssignmentTrigger
            latest_commit=$(git rev-parse HEAD)
            echo "latest_commit=${latest_commit}" >> $GITHUB_ENV
       - name: get the last known commit
