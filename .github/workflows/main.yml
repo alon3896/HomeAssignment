@@ -53,33 +53,8 @@ jobs:
           git commit -m "feat:Update last known commit"
           git remote set-url origin https://x-access-token:${{secrets.AFIMILK}}@github.com/alon3896/HomeAssignment.git
           git push
-        
-      - name: Build and package
-        if: env.commits_are_different == 'true'
-        run: |
-          cd src
-          dotnet restore
-          dotnet build --configuration Release
-           latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))
-          dotnet pack --configuration Release --output ./nuget /p:PackageVersion=${{  latest_tag }} /p:IncludeSymbols=false /p:SymbolPackageFormat=snupkg
-                
 
 
-          ls -l ./nuget
-
-      - name: List published files
-        if: env.commits_are_different == 'true'
-        run: |
-          ls -l ./src/InterviewTask/bin/Release/net8.0/
-          ls -l ./src/nuget/
-          
-      - name: Copy files to release directory
-        if: env.commits_are_different == 'true'
-        run: |
-          mkdir -p ${{ github.workspace }}/release_files
-          cp ./src/InterviewTask/bin/Release/net8.0/InterviewTask.dll ${{ github.workspace }}/release_files/
-          cp ./src/nuget/InterviewTask.1.0.0.nupkg ${{ github.workspace }}/release_files/
-          
 
       - name: Create a new version
         if: env.commits_are_different == 'true'
@@ -109,6 +84,35 @@ jobs:
       - name: Debug VERSION
         if: env.commits_are_different == 'true'
         run: echo "VERSION=${{ env.VERSION }}"
+
+        
+      - name: Build and package
+        if: env.commits_are_different == 'true'
+        run: |
+          cd src
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release --output ./nuget /p:PackageVersion=${{env.VERSION}} /p:IncludeSymbols=false /p:SymbolPackageFormat=snupkg
+                
+
+
+          ls -l ./nuget
+
+      - name: List published files
+        if: env.commits_are_different == 'true'
+        run: |
+          ls -l ./src/InterviewTask/bin/Release/net8.0/
+          ls -l ./src/nuget/
+          
+      - name: Copy files to release directory
+        if: env.commits_are_different == 'true'
+        run: |
+          mkdir -p ${{ github.workspace }}/release_files
+          cp ./src/InterviewTask/bin/Release/net8.0/InterviewTask.dll ${{ github.workspace }}/release_files/
+          cp ./src/nuget/InterviewTask.1.0.0.nupkg ${{ github.workspace }}/release_files/
+          
+
+
 
       - name: Create GitHub Release
         if: env.commits_are_different == 'true'
