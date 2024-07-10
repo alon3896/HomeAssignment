@@ -63,6 +63,17 @@ jobs:
           dotnet pack --configuration Release --output ./nuget
 
           ls -l ./nuget
+
+      - name: List DLL files
+        if: env.commits_are_different == 'true'
+        run: |
+          find . -type f -name "*.dll"
+          
+      - name: Copy DLL files to a specific directory
+        if: env.commits_are_different == 'true'
+        run: |
+          mkdir -p ${{ github.workspace }}/dll_files
+          find . -type f -name "*.dll" -exec cp {} ${{ github.workspace }}/dll_files/ \;
       
 
       - name: Create a new version
