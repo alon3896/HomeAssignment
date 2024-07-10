@@ -89,9 +89,9 @@ jobs:
         id: strip_version
         run: |
           echo "Original version: $VERSION"
-          PACKAGE_VERSION=$(echo $VERSION | sed 's/^v//')
-          echo "Stripped version: $PACKAGE_VERSION"
-          echo "::set-env name=PACKAGE_VERSION::$PACKAGE_VERSION"
+          pv=$(echo $VERSION | sed 's/^v//')
+          echo "Stripped version: $pv"
+          echo "PACKAGE_VERSION=${pv}" >> $GITHUB_ENV      
           
       - name: Build and package
         if: env.commits_are_different == 'true'
