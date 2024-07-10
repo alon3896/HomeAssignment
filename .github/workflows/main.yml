@@ -61,7 +61,7 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet pack --configuration Release --output ./nuget
-          dotnet publish --configuration Release --output ./publish --self-contained true --runtime win-x64
+          
 
 
           ls -l ./nuget
@@ -71,15 +71,14 @@ jobs:
         run: |
           echo "DLL files:"
           find . -type f -name "*.dll"
-          echo "Executable files:"
-          find ./publish -type f -name "*.exe"
+         
           
       - name: Copy artifacts to a specific directory
         if: env.commits_are_different == 'true'
         run: |
           mkdir -p ${{ github.workspace }}/artifacts
           find . -type f -name "*.dll" -exec cp {} ${{ github.workspace }}/artifacts/ \;
-          cp ./publish/*.exe ${{ github.workspace }}/artifacts/
+         
       
 
       - name: Create a new version
@@ -145,13 +144,4 @@ jobs:
           asset_name: InterviewTask.${{ env.VERSION }}.dll
           asset_content_type: application/octet-stream
 
-      - name: Upload executable
-        if: env.commits_are_different == 'true'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN:  ${{ secrets.PAT }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/artifacts/*.exe
-          asset_name: MyApplication.${{ env.VERSION }}.exe
-          asset_content_type: application/octet-stream
+   
