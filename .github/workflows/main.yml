@@ -55,7 +55,7 @@ jobs:
           git commit -m "Update last known commit"
           git push
         env:
-          GITHUB_TOKEN:  ${{ secrets.AFIMILK }
+          GITHUB_TOKEN:  ${{ secrets.AFIMILK }}
 
         
       - name: Build and package
