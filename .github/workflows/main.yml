@@ -54,6 +54,8 @@ jobs:
           git add last_commit.txt
           git commit -m "Update last known commit"
           git push
+        env:
+          GITHUB_TOKEN:  ${{ secrets.AFIMILK }
 
         
       - name: Build and package
@@ -91,6 +93,7 @@ jobs:
             new_version="v$major.$minor.$patch"
           fi
           echo "VERSION=${new_version}" >> $GITHUB_ENV
+          
       - name: Debug VERSION
         if: env.commits_are_different == 'true'
         run: echo "VERSION=${{ env.VERSION }}"
