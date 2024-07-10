@@ -142,7 +142,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.AFIMILK }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/release_files/InterviewTask.${{ env.VERSION }}.dll
+          asset_path: ${{ github.workspace }}/release_files/InterviewTask.dll
           asset_name: InterviewTask.${{ env.VERSION }}.dll
           asset_content_type: application/octet-stream
    
