@@ -85,23 +85,15 @@ jobs:
         if: env.commits_are_different == 'true'
         run: echo "VERSION=${{ env.VERSION }}"
         
-      - name: Strip 'v' prefix from VERSION
-        id: strip_version
-        run: |
-          echo "Original version: $VERSION"
-          pv=$(echo $VERSION | sed 's/^v//')
-          echo "Stripped version: $pv"
-          echo "PACKAGE_VERSION=${pv}" >> $GITHUB_ENV      
+        
           
       - name: Build and package
         if: env.commits_are_different == 'true'
         run: |
           cd src
-          dotnet restore /p:PackageVersion=${{ env.PACKAGE_VERSION }}
-          dotnet build --configuration Release /p:PackageVersion=${{ env.PACKAGE_VERSION }}
-          echo "pacVERSION=${{env.PACKAGE_VERSION }}"
-          dotnet pack --configuration Release --output ./nuget /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:IncludeSymbols=false /p:SymbolPackageFormat=snupkg
-
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet pack --configuration Release --output ./nuget
           ls -l ./nuget
 
       - name: List published files
