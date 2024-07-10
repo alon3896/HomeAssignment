@@ -128,10 +128,10 @@ jobs:
         if: env.commits_are_different == 'true'
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN:  ${{ secrets.AFIMILK }}
+          GITHUB_TOKEN: ${{ secrets.AFIMILK }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /home/runner/work/HomeAssignment/HomeAssignment/src/nuget/InterviewTask.1.0.0.nupkg
+          asset_path: ./src/nuget/InterviewTask.${{ env.VERSION }}.nupkg
           asset_name: InterviewTask.${{ env.VERSION }}.nupkg
           asset_content_type: application/octet-stream
 
@@ -139,11 +139,10 @@ jobs:
         if: env.commits_are_different == 'true'
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN:  ${{ secrets.AFIMILK }}
+          GITHUB_TOKEN: ${{ secrets.AFIMILK }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/release_files/InterviewTask.dll
+          asset_path: ${{ github.workspace }}/release_files/InterviewTask.${{ env.VERSION }}.dll
           asset_name: InterviewTask.${{ env.VERSION }}.dll
           asset_content_type: application/octet-stream
-
    
