@@ -61,6 +61,8 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet pack --configuration Release --output ./nuget
+          dotnet publish --configuration Release --output ./publish --self-contained true --runtime win-x64
+
 
           ls -l ./nuget
 
