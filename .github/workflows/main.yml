@@ -60,8 +60,8 @@ jobs:
           cd src
           dotnet restore
           dotnet build --configuration Release
-          dotnet pack --configuration Release --output ./nuget
-          
+          dotnet pack --configuration Release --output ./nuget /p:PackageVersion=${{ steps.set_version.outputs.version }} /p:IncludeSymbols=false /p:SymbolPackageFormat=snupkg
+                
 
 
           ls -l ./nuget
