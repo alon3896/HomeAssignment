@@ -92,7 +92,7 @@ jobs:
           cd src
           dotnet restore
           dotnet build --configuration Release
-          dotnet pack --configuration Release --output ./nuget /p:PackageVersion=${{env.VERSION}} /p:IncludeSymbols=false /p:SymbolPackageFormat=snupkg
+          dotnet pack --configuration Release --output ./nuget /p:PackageVersion=${{env.VERSION#v}} /p:IncludeSymbols=false /p:SymbolPackageFormat=snupkg
                 
 
 
