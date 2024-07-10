@@ -87,10 +87,12 @@ jobs:
         
       - name: Strip 'v' prefix from VERSION
         id: strip_version
-        run: echo "::set-env name=PACKAGE_VERSION::${{ env.VERSION/refs\/tags\// }}"
-        env:
-         VERSION: ${{ env.VERSION }}
-        
+        run: |
+          echo "Original version: $VERSION"
+          PACKAGE_VERSION=$(echo $VERSION | sed 's/^v//')
+          echo "Stripped version: $PACKAGE_VERSION"
+          echo "::set-env name=PACKAGE_VERSION::$PACKAGE_VERSION"
+          
       - name: Build and package
         if: env.commits_are_different == 'true'
         run: |
