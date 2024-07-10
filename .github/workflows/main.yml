@@ -60,7 +60,8 @@ jobs:
           cd src
           dotnet restore
           dotnet build --configuration Release
-          dotnet pack --configuration Release --output ./nuget /p:PackageVersion=${{ steps.set_version.outputs.version }} /p:IncludeSymbols=false /p:SymbolPackageFormat=snupkg
+           latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))
+          dotnet pack --configuration Release --output ./nuget /p:PackageVersion=${{  latest_tag }} /p:IncludeSymbols=false /p:SymbolPackageFormat=snupkg
                 
 
 
