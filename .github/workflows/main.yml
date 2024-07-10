@@ -107,7 +107,7 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/release_files
           cp ./src/InterviewTask/bin/Release/net8.0/InterviewTask.dll ${{ github.workspace }}/release_files/
-          cp ./src/nuget/InterviewTask.1.0.0.nupkg ${{ github.workspace }}/release_files/
+          
           
 
 
