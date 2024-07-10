@@ -39,9 +39,23 @@ jobs:
           else
             echo "commits_are_different=false" >> $GITHUB_ENV
           fi
+
+          
       - name: save last commit
         if: env.commits_are_different == 'true'
         run: echo "${{ env.latest_commit }}" > last_commit.txt
+
+      - name: save last commit
+        if: env.commits_are_different == 'true'
+        run: |
+          echo "${{ env.latest_commit }}" > last_commit.txt
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          git add last_commit.txt
+          git commit -m "Update last known commit"
+          git push
+
+        
       - name: Build and package
         if: env.commits_are_different == 'true'
         run: |
