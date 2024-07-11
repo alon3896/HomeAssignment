@@ -12,7 +12,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Fetch all history and tags
+          fetch-depth: 0  
 
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
@@ -26,6 +26,8 @@ jobs:
            cd HomeAssignmentTrigger
            latest_commit=$(git rev-parse HEAD)
            echo "latest_commit=${latest_commit}" >> $GITHUB_ENV
+
+           
       - name: get the last known commit
         id: get_last_commit
         run: echo "last_commit=$(cat last_commit.txt || echo 'none')" >> $GITHUB_ENV
@@ -41,8 +43,6 @@ jobs:
           fi
 
           
-    
-
       - name: save last commit
         if: env.commits_are_different == 'true'
         run: |
@@ -53,7 +53,6 @@ jobs:
           git commit -m "feat:Update last known commit"
           git remote set-url origin https://x-access-token:${{secrets.AFIMILK}}@github.com/alon3896/HomeAssignment.git
           git push
-
 
 
       - name: Create a new version
@@ -85,8 +84,7 @@ jobs:
         if: env.commits_are_different == 'true'
         run: echo "VERSION=${{ env.VERSION }}"
         
-        
-          
+                 
       - name: Build and package
         if: env.commits_are_different == 'true'
         run: |
@@ -109,9 +107,6 @@ jobs:
           cp ./src/InterviewTask/bin/Release/net8.0/InterviewTask.dll ${{ github.workspace }}/release_files/
           
           
-
-
-
       - name: Create GitHub Release
         if: env.commits_are_different == 'true'
         id: create_release
@@ -119,7 +114,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.AFIMILK }}
         with:
-          tag_name: 'v${{ env.VERSION }}'  # Ensure this is correctly formatted, e.g., 'v${{ env.VERSION }}'
+          tag_name: 'v${{ env.VERSION }}'  
           release_name: Release ${{ env.VERSION }}
           draft: false
           prerelease: false
